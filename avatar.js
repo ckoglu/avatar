@@ -55,9 +55,9 @@ class ProfilApp {
     const sakalKod = c[7]?.toLowerCase();
     const govdeKod = c[8]?.toLowerCase();
     const govdeRenk = grenk[c[9]?.toLowerCase()] || this.WHITE;
-    const radius = element.getAttribute('radius') || '22';
-    const size = element.getAttribute('size') || '300';
-    const line = element.getAttribute('line') || '5';
+    const radius = element.getAttribute('radius') || '25';
+    const size = element.getAttribute('size') || '200';
+    const line = element.getAttribute('line') || '10';
     const borderValue = `${line}px solid ${bgRenk}30`;
     let radiusValue = radius.includes('px') ? radius : radius + 'px';
     let sizeValue = size.includes('px') ? size : size + 'px';

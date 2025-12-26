@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f466-1f3fb.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f466-1f3fb.svg" type="image/x-icon">
+    <title>Avatar Generator - GitHub</title>
+    <meta name="description" content="avatar oluşturma kütüphanesi">
+    <meta name="keywords" content="avatar, js, github, minimal, kütüphane">
+    <meta name="author" content="ckoglu">
+    <link rel="preload" href="./css/style.css" as="style">
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="preload" href="./css/highlite.css" as="style">
+    <link rel="stylesheet" href="./css/highlite.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- Ana Başlık -->
+        <header class="main-title">
+            <a href="./"><h1>Avatar Generator</h1></a>
+            <p>Herkes için kişiselleştirilmiş avatar</p>
+        </header>
+        
+        <!-- Avatar Editör -->
+        <section class="avatar-editor">
+            <!-- Avatar Görüntüleme -->
+            <div class="avatar-display">
+                <div avatar size="200" radius="25" line="10"></div>
+            </div>
+
+            <div class="code-value">
+                <input id="code-display" type="text" class="code-input" value="">
+                <div class="buttons">
+                    <data id="api-btn" size="0.9" data-tooltip="API URL'sini aç" onclick="apiBlank(this)"><i icon="code"></i></data>
+                    <data id="random-btn" size="0.9" data-tooltip="Rastgele"><i icon="repeat"></i></data>
+                    <data id="copy-btn" size="0.9" data-tooltip="Kopyala"><i icon="copy"></i></data>
+                </div>
+            </div>
+            
+            <!-- Kontrol Butonları -->
+            <div id="controls-container" class="avatar-controls"></div>
+
+            <!-- Ayarlar -->
+            <div class="settings-bar">
+                <div class="setting-group"><!-- Boyut -->
+                    <input id="size-input" type="range" class="setting-input" min="16" max="1080" value="200" data-tooltip="Boyut">
+                    <div class="setting-bottom">
+                        <span>Boyut:</span><div class="value-display size">250</div><span>px</span>
+                    </div>
+                </div>
+                <div class="setting-group"><!-- Radius -->
+                    <input id="radius-input" type="range" class="setting-input" min="0" max="500" value="25" data-tooltip="Radius">
+                    <div class="setting-bottom">
+                        <span>Radius:</span><div class="value-display radius">30</div><span>px</span>
+                    </div>
+                </div>
+                <div class="setting-group"><!-- Çizgi Kalınlığı -->
+                    <input id="line-input" type="range" class="setting-input" min="0" max="25" value="10" data-tooltip="Line">
+                    <div class="setting-bottom">
+                        <span>Line:</span><div class="value-display line">5</div><span>px</span>
+                    </div>
+                </div>
+            </div>
+                
+        </section>
+
+        <section class="about-section">
+            <h3 class="section-title">🎯 Sistem Nedir?</h3>
+            <p>Avatar Generator, <strong>10 karakterlik bir kodla minimal avatar oluşturan</strong> açık kaynaklı bir JavaScript kütüphanesidir. Her karakter avatarın farklı bir özelliğini temsil eder ve bu kodlarla sınırsız avatar kombinasyonu oluşturulabilir.</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">10</span><p>Karakter Kodu</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">150+</span><p>SVG Parts</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2</span><p>API, JS seçeneği</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">∞</span><p>Kombinasyon</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- URL Input -->
+        <section class="code-section">
+            <div class="url-container">
+                <h3 class="section-title">⚙️ API Endpoint (Statik)</h3>
+                <div class="input-wrapper right-icon">
+                    <input type="text" class="url-input" id="apiUrlInput" value="" readonly onclick="this.select()">
+                    <data onclick="copyUrl(this)" size="0.8" data-tooltip="kopyala"><i icon="copy"></i></data>
+                </div>
+                <div class="code-header"><span>CSS</span></div>
+                <pre class="input-wrapper right-icon" onclick="selectAllCode(this)" ondblclick="copyCode(this)">
+                    <code data-lang="css" id="apiCssCode">.avatar {
+        width: 200px;
+        height: 200px;
+        background-image: url('');
+        background-size: contain;
+        border-radius: 20px;
+        }</code>
+                    <data onclick="copyCode(this)" size="0.8" data-tooltip="kopyala"><i icon="copy"></i></data>
+                </pre>
+                <div class="code-header"><span>SVG uzantılı</span></div>
+                <pre class="input-wrapper right-icon" onclick="selectAllCode(this)" ondblclick="copyCode(this)">
+                    <code data-lang="html" id="apiHtmlCode">&lt;img src=&quot;&quot;&gt;</code>
+                    <data onclick="copyCode(this)" size="0.8" data-tooltip="kopyala"><i icon="copy"></i></data>
+                </pre>
+                <div class="code-header"><span>Markdown</span></div>
+                <pre class="input-wrapper right-icon" onclick="selectAllCode(this)" ondblclick="copyCode(this)">
+                    <code data-lang="markdown" id="apiMarkdownCode">![Avatar]()</code>
+                    <data onclick="copyCode(this)" size="0.8" data-tooltip="kopyala"><i icon="copy"></i></data>
+                </pre>
+            </div>
+        </section>
+
+        <section class="code-section">
+            <div class="url-container">
+                <h3 class="section-title">📜 Avatar.js (Dinamik)</h3>
+                <div class="input-wrapper right-icon">
+                    <input type="text" class="url-input" id="jsUrlInput" value="https://ckoglu.github.io/avatar/avatar.js" readonly onclick="this.select()">
+                    <data id="copyUrlIcon" onclick="copyUrl(this)" size="0.8" data-tooltip="kopyala"><i icon="copy"></i></data>
+                </div>
+                <div class="code-header"><span>JScript</span></div>
+                <pre id="jsCode" class="input-wrapper right-icon" onclick="selectAllCode(this)" ondblclick="copyCode(this)">
+                    <code data-lang="html">&lt;script src=&quot;https://ckoglu.github.io/avatar/avatar.js&quot;&gt;&lt;/script&gt;</code>
+                    <data onclick="copyCode(this)" size="0.8" data-tooltip="kopyala"><i icon="copy"></i></data>
+                </pre>
+                <div class="code-header"><span>HTML</span></div>
+                <pre id="htmlCode" class="input-wrapper right-icon" onclick="selectAllCode(this)" ondblclick="copyCode(this)">
+                    <code data-lang="html">![Avatar]()</code>
+                    <data onclick="copyCode(this)" size="0.8" data-tooltip="kopyala"><i icon="copy"></i></data>
+                </pre>
+            </div>
+        </section>
+
+        <!-- Özellikler -->
+        <section class="about-section">
+            <h3 class="section-title">🚀 Sistem Özellikleri</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🌐 API</h3><p>JavaScript gerektirmeyen API. Sadece &lt;img&gt; tag'i yeterli.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚡ Avatar.js</h3><p>Browser'da çalışan, interaktif değişiklik yapabilen kütüphane. Canlı editör desteği.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🧑 SVG</h3><p>Vektörel avatar'lar. Kaliteden kaybetmez, her boyutta net görüntü.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎨 Özelleştirme</h3><p>Boyut, radius, çizgi kalınlığı gibi tüm parametreler ayarlanabilir.</p>
+                </div>
+            </div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Özellik</th>
+                        <th>API Endpoint</th>
+                        <th>Avatar.js</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>JavaScript Gereksinimi</td>
+                        <td><span class="checkmark">❌</span> Gerekmez</td>
+                        <td><span class="checkmark">✅</span> Gerekli</td>
+                    </tr>
+                    <tr>
+                        <td>Dinamik Değişim</td>
+                        <td><span class="checkmark">❌</span> Statik</td>
+                        <td><span class="checkmark">✅</span> Dinamik</td>
+                    </tr>
+                    <tr>
+                        <td>Performans</td>
+                        <td><span class="checkmark">✅</span> Edge Cache</td>
+                        <td><span class="checkmark">⚡</span> Client-side</td>
+                    </tr>
+                    <tr>
+                        <td>Boyut</td>
+                        <td><span class="checkmark">✅</span> 0KB</td>
+                        <td><span class="checkmark">📦</span> 15KB</td>
+                    </tr>
+                    <tr>
+                        <td>SEO</td>
+                        <td><span class="checkmark">✅</span> İmg Tag</td>
+                        <td><span class="checkmark">⚠️</span> JS Render</td>
+                    </tr>
+                    <tr>
+                        <td>Kullanım</td>
+                        <td><span class="checkmark">🌐</span> Her Yerde</td>
+                        <td><span class="checkmark">⚡</span> Web'de</td>
+                    </tr>
+                </tbody>
+            </table>      
+            <div class="code-architecture">
+                <details>
+                    <summary class="title-about">Kod Yapısı</summary>
+                    <pre>x x x x x x x x x x
+│ │ │ │ │ │ │ │ │ │
+│ │ │ │ │ │ │ │ │ └─> kıyafet rengi
+│ │ │ │ │ │ │ │ └─> kıyafet
+│ │ │ │ │ │ │ └─> sakal
+│ │ │ │ │ │ └─> aksesuar
+│ │ │ │ │ └─> ağız
+│ │ │ │ └─> göz
+│ │ │ └─> saç
+│ │ └─> ten rengi
+│ └─> yüz tipi
+└─> arka plan rengi</pre>
+                </details>
+            </div>
+        </section>
+
+        <!-- Lisans -->
+        <section class="about-section">
+            <h3 class="section-title">📄 Lisans </h3>
+            <ul>
+                <li><p><strong>MIT License</strong> - Tamamen ücretsiz</p></li>
+                <li><p><strong>Ticari Kullanım</strong> - Sınırsız ve ücretsiz</p></li>
+                <li><p><strong>Attribution</strong> - Zorunlu değil</p></li>
+            </ul>
+            <ul class="about-link">
+                <li><a href="https://ckoglu.github.io/avatar/" target="_blank" data-tooltip="Avatar Generator">ckoglu.github.io/avatar <data size="0.7"><i icon="external"></i></data></a></li>
+                <li><a href="https://github.com/ckoglu/avatar" target="_blank" data-tooltip="Repositories">github.com/ckoglu/avatar <data size="0.7"><i icon="external"></i></data></a></li>
+                <li><a href="https://avatar.ckoglu.workers.dev/" target="_blank" data-tooltip="API Endpoint">avatar.ckoglu.workers.dev <data size="0.7"><i icon="external"></i></data></a></li>
+            </ul>
+        </section>
+
+        <section class="slogan-section"><h2>✨ "Minimal kod, maksimal avatar"</h3></section> <!-- Slogan -->
+        <footer><p>Avatar Generator © 2025 - GitHub</p></footer> <!-- Footer -->
+    </div>
+   
+    <script src="avatar.js"></script>
+    <script src="./js/generate.js"></script>
+    <script src="./js/highlite.js"></script>
+    <script src="./js/tooltip.js"></script>
+    <script src="./js/alert.js"></script>
+</body>
+</html>

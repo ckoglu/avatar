@@ -63,8 +63,6 @@ class ProfilApp {
     let sizeValue = size.includes('px') ? size : size + 'px';
     let avatarCode = c.join('');
     const style = `width: ${sizeValue}; height: ${sizeValue}; border-radius: ${radiusValue}; border: ${borderValue}; background: ${this.WHITE}00; display: block; margin: 0 auto; box-sizing: border-box;`;
-    let target = ``;
-    if (!window.location.pathname.includes('/avatar/avatar/')) {let target = `<a href="https://ckoglu.github.io/avatar/?code=${avatarCode}&size=${size}&radius=${radius}&line=${line}" target="_blank">`;}
     const svgBas = `<svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" style="${style}">`;
     const svgFilter = `<defs><filter id="white-outline" x="-50" y="-50" width="350" height="350" filterUnits="userSpaceOnUse"><feMorphology in="SourceAlpha" operator="dilate" radius="${line}" result="dilated"/><feFlood flood-color="${this.WHITE}" result="white" /><feComposite in="white" in2="dilated" operator="in" result="outline"/><feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
     const svgBackground = `<rect width="300" height="300" fill="${bgRenk}"/><g transform="translate(5, 0)" filter="url(#white-outline)">`;
@@ -75,9 +73,8 @@ class ProfilApp {
     const govdePath = `<g fill="${govdeRenk}" stroke="${this.BLACK}" stroke-width="0">${govde[govdeKod] || ''}</g>`;
     const aksPath = aks[aksKod] || '';
     const sakalPath = sakal[sakalKod] || '';
-    let svgSon = ``;
-    if (!window.location.pathname.includes('/avatar/avatar/')) {let svgSon = `</g></svg></a>`;} else {let svgSon = `</g></svg>`;}
-    this.kisi.svg = target + svgBas + svgFilter + svgBackground + govdePath + yuzPath + sacPath + agizPath + sakalPath + gozPath + aksPath + svgSon;
+    const svgSon = `</g></svg>`;
+    this.kisi.svg = svgBas + svgFilter + svgBackground + govdePath + yuzPath + sacPath + agizPath + sakalPath + gozPath + aksPath + svgSon;
   }
 }
 window.ProfilApp = ProfilApp;

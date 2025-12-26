@@ -642,9 +642,168 @@ function copyUrl(element) {
   });
 }
 
+// İndirme fonksiyonları
+async function downloadSVG() {
+  try {
+    const avatarElement = document.querySelector('[avatar]');
+    if (!avatarElement) {
+      AlertBox('Avatar elementi bulunamadı!', 'danger');
+      return;
+    }
+    
+    const svgElement = avatarElement.querySelector('svg');
+    if (!svgElement) {
+      AlertBox('SVG elementi bulunamadı!', 'danger');
+      return;
+    }
+    
+    const code = avatarElement.getAttribute('avatar') || window.app?.kaydetKod || 'avatar';
+    const filename = `avatar-${code}.svg`;
+    
+    // SVG elementini klonlayalım ve stil ekleyelim
+    const clonedSvg = svgElement.cloneNode(true);
+    
+    // SVG'yi temizleyip optimize edelim
+    const serializer = new XMLSerializer();
+    let svgString = serializer.serializeToString(clonedSvg);
+    
+    // SVG başlığını ekleyelim
+    svgString = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n' + svgString;
+    
+    // Blob oluştur ve indir
+    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    saveDownloadFile(svgBlob, filename);
+    
+    AlertBox('SVG formatında indirildi', 'success');
+  } catch (error) {
+    console.error('SVG indirme hatası:', error);
+    AlertBox('SVG indirme sırasında hata oluştu!', 'danger');
+  }
+}
+
+async function downloadPNG() {
+  try {
+    await downloadRasterFormat('png');
+  } catch (error) {
+    console.error('PNG indirme hatası:', error);
+    AlertBox('PNG indirme sırasında hata oluştu!', 'danger');
+  }
+}
+
+async function downloadJPG() {
+  try {
+    await downloadRasterFormat('jpg');
+  } catch (error) {
+    console.error('JPG indirme hatası:', error);
+    AlertBox('JPG indirme sırasında hata oluştu!', 'danger');
+  }
+}
+
+async function downloadRasterFormat(format) {
+  const avatarElement = document.querySelector('[avatar]');
+  if (!avatarElement) {
+    AlertBox('Avatar elementi bulunamadı!', 'danger');
+    return;
+  }
+  
+  const svgElement = avatarElement.querySelector('svg');
+  if (!svgElement) {
+    AlertBox('SVG elementi bulunamadı!', 'danger');
+    return;
+  }
+  
+  const size = parseInt(avatarElement.getAttribute('size')) || 200;
+  const code = avatarElement.getAttribute('avatar') || window.app?.kaydetKod || 'avatar';
+  const filename = `avatar-${code}.${format}`;
+  
+  // SVG'yi string'e çevir
+  const serializer = new XMLSerializer();
+  let svgString = serializer.serializeToString(svgElement);
+  
+  // Data URL oluştur
+  const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
+  
+  // Canvas oluştur
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  
+  // Canvas boyutunu ayarla (yüksek çözünürlük için scale)
+  const scale = 2; // Retina desteği için 2x
+  canvas.width = size * scale;
+  canvas.height = size * scale;
+  
+  // SVG'yi yükle
+  const img = new Image();
+  
+  return new Promise((resolve, reject) => {
+    img.onload = () => {
+      try {
+        // Canvas'ı temizle ve beyaz arka plan ekle
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // SVG'yi canvas'a çiz (scale faktörünü uygula)
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // Canvas'tan blob oluştur
+        canvas.toBlob((blob) => {
+          if (blob) {
+            saveDownloadFile(blob, filename, format === 'png' ? 'image/png' : 'image/jpeg');
+            URL.revokeObjectURL(url);
+            resolve();
+            AlertBox(`${format.toUpperCase()} formatında indirildi`, 'success');
+          } else {
+            reject(new Error('Blob oluşturulamadı'));
+          }
+        }, format === 'png' ? 'image/png' : 'image/jpeg', 0.95);
+      } catch (error) {
+        reject(error);
+      }
+    };
+    
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+function saveDownloadFile(blob, filename) {
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.href = url;
+  link.download = filename;
+  link.style.display = 'none';
+  
+  document.body.appendChild(link);
+  link.click();
+  
+  // Temizlik
+  setTimeout(() => {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, 100);
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const app = new ProfilAppExtended();
   app.init();
+
+  // İndirme butonları için event listener'lar
+  const downloadButtons = document.querySelectorAll('.dropdown-item[data-format]');
+  downloadButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const format = btn.dataset.format.toLowerCase();
+      if (format === 'svg') {
+        downloadSVG();
+      } else if (format === 'png') {
+        downloadPNG();
+      } else if (format === 'jpg') {
+        downloadJPG();
+      }
+    });
+  });
   
   // Manuel kod girişi için event listener
   const codeDisplay = document.getElementById('code-display');
@@ -700,3 +859,4 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+

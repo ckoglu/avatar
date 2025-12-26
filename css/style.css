@@ -65,6 +65,7 @@ details>:not(summary){padding:15px 20px;animation:slideDown var(--transition-spe
 /* Avatar Editor */
 .avatar-editor{max-width:var(--maxw);margin:auto;padding:0}
 .avatar-display{text-align:center;margin-bottom:20px;padding:25px;background:var(--bg-secondary);border:1px solid var(--border-clr);border-radius:var(--border-radius-lg);box-shadow:var(--shadow-md)}
+.avatar-display a {margin: auto;width: fit-content;display: block;}
 .avatar-controls{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0;justify-content:space-between;padding:20px;background:var(--bg-secondary);border:1px solid var(--border-clr);border-radius:var(--border-radius-md);margin-bottom:20px}
 .control-button{width:45px;height:45px;border:2px solid var(--border-clr);padding:1px;border-radius:calc(var(--border-radius-sm) + 2px);cursor:pointer;background:var(--bg-primary);transition:all var(--transition-speed);display:flex;align-items:center;justify-content:center}
 .control-button:hover{border-color:var(--focus-clr);transform:translateY(-2px);box-shadow:var(--shadow-sm)}

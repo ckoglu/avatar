@@ -36,6 +36,14 @@
                     <data id="api-btn" size="0.9" data-tooltip="API URL'sini aç" onclick="apiBlank(this)"><i icon="code"></i></data>
                     <data id="random-btn" size="0.9" data-tooltip="Rastgele"><i icon="repeat"></i></data>
                     <data id="copy-btn" size="0.9" data-tooltip="Kopyala"><i icon="copy"></i></data>
+                    <details class="dropdown">
+                        <summary><data id="down-btn" size="0.9" data-tooltip="İndir"><i icon="software-download"></i></data></summary>
+                        <ul>
+                            <li><button class="dropdown-item" data-format="svg">SVG</button></li>
+                            <li><button class="dropdown-item" data-format="png">PNG</button></li>
+                            <li><button class="dropdown-item" data-format="jpg">JPG</button></li>
+                        </ul>
+                    </details>
                 </div>
             </div>
             
@@ -196,7 +204,7 @@
                 </tbody>
             </table>      
             <div class="code-architecture">
-                <details>
+                <details class="accordion">
                     <summary class="title-about">Kod Yapısı</summary>
                     <pre>x x x x x x x x x x
 │ │ │ │ │ │ │ │ │ │

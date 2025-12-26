@@ -31,9 +31,14 @@ class ProfilAppExtended {
     this.updateCodeDisplay();
     this.setupSettingsListeners();
     this.setupManualCodeInput();
+    this.updateAvatarFromSettings();
     this.updateApiCodeSamples();
-    window.app = this;
     setTimeout(() => this.updateHtmlCode(), 100);
+    window.app = this;
+    
+    // Random butonu event listener
+    const randomBtn = document.getElementById('random-btn');
+    if (randomBtn) {randomBtn.addEventListener('click', () => {this.kodUret();});}
   }
 
   setupManualCodeInput() {
@@ -156,6 +161,7 @@ class ProfilAppExtended {
       this.updateAvatar();
       this.updateAllButtonPreviews();
       this.updateCodeDisplay();
+      this.updateAvatarFromSettings();
       this.updateHtmlCode();
       this.updateApiCodeSamples(); 
     }
@@ -372,64 +378,122 @@ class ProfilAppExtended {
     const sizeFromURL = this.urlParams.get('size');
     const radiusFromURL = this.urlParams.get('radius');
     const lineFromURL = this.urlParams.get('line');
+    
+    const element = document.querySelector('[avatar]');
+    
+    // URL'den gelen değerleri avatar elementine uygula
+    if (element) {
+      if (sizeFromURL) element.setAttribute('size', sizeFromURL);
+      if (radiusFromURL) element.setAttribute('radius', radiusFromURL);
+      if (lineFromURL) element.setAttribute('line', lineFromURL);
+    }
+    
     const setValueWithDisplay = (input, value, displayClass) => {
       if (input && value) {
         input.value = value;
         const display = input.closest('.setting-group').querySelector(`.value-display.${displayClass}`);
-        if (display) {display.textContent = value;}
+        if (display) {
+          display.textContent = value;
+        }
       }
     };
     
-    setValueWithDisplay(sizeInput, sizeFromURL, 'size');
-    setValueWithDisplay(radiusInput, radiusFromURL, 'radius');
-    setValueWithDisplay(lineInput, lineFromURL, 'line');
+    // URL değerlerini inputlara yükle
+    setValueWithDisplay(sizeInput, sizeFromURL || (element ? element.getAttribute('size') : null), 'size');
+    setValueWithDisplay(radiusInput, radiusFromURL || (element ? element.getAttribute('radius') : null), 'radius');
+    setValueWithDisplay(lineInput, lineFromURL || (element ? element.getAttribute('line') : null), 'line');
     
     const validateAndUpdate = (input, min, max, type) => {
       let value = parseInt(input.value);
-      if (isNaN(value)) {value = min;}
-      if (value < min) {value = min;} 
-      else if (value > max) {value = max;}
+      if (isNaN(value)) {
+        value = min;
+      }
+      if (value < min) {
+        value = min;
+      } else if (value > max) {
+        value = max;
+      }
       input.value = value;
       const display = input.closest('.setting-group').querySelector(`.value-display.${type}`);
-      if (display) {display.textContent = value;}
+      if (display) {
+        display.textContent = value;
+      }
       return value;
     };
     
-    [sizeInput, radiusInput, lineInput].forEach((input, index) => {
+    const inputs = [sizeInput, radiusInput, lineInput];
+    const limits = [
+      { min: 16, max: 1080 },
+      { min: 0, max: 500 },
+      { min: 0, max: 25 }
+    ];
+    const types = ['size', 'radius', 'line'];
+    
+    inputs.forEach((input, index) => {
       if (!input) return;
-      const limits = [{ min: 16, max: 620 }, { min: 0, max: 500 }, { min: 0, max: 25 }];
-      const types = ['size', 'radius', 'line'];
+      
       const { min, max } = limits[index];
       const type = types[index];
       
+      // Input değeri değiştiğinde display'i güncelle
       input.addEventListener('input', (e) => {
         const display = e.target.closest('.setting-group').querySelector(`.value-display.${type}`);
-        if (display) {display.textContent = e.target.value;}
+        if (display) {
+          display.textContent = e.target.value;
+        }
       });
       
-      input.addEventListener('change', () => {
-        validateAndUpdate(input, min, max, type);
+      // Değişiklik olduğunda doğrula ve avatarı güncelle
+      const handleUpdate = () => {
+        const value = validateAndUpdate(input, min, max, type);
+        
+        // Avatar elementinin attribute'ını güncelle
+        if (element) {
+          element.setAttribute(type, value.toString());
+        }
+        
+        // Avatarı güncelle
         this.updateAvatarFromSettings();
-      });
+      };
       
-      input.addEventListener('blur', () => {
-        validateAndUpdate(input, min, max, type);
-        this.updateAvatarFromSettings();
-      });
+      input.addEventListener('change', handleUpdate);
+      input.addEventListener('blur', handleUpdate);
       
+      // Sadece sayısal karakterlere izin ver
       input.addEventListener('keypress', (e) => {
-        if (!/^\d$/.test(e.key)) {e.preventDefault();}
+        if (!/^\d$/.test(e.key)) {
+          e.preventDefault();
+        }
       });
       
+      // Paste işlemi için
       input.addEventListener('paste', (e) => {
         e.preventDefault();
         const pastedText = e.clipboardData.getData('text');
         const numericText = pastedText.replace(/[^\d]/g, '');
         input.value = numericText;
+        
         const display = input.closest('.setting-group').querySelector(`.value-display.${type}`);
-        if (display) {display.textContent = numericText;}
+        if (display) {
+          display.textContent = numericText;
+        }
+        
+        // Paste işleminden sonra otomatik güncelle
+        setTimeout(() => handleUpdate(), 10);
       });
+      
+      // Input'u ilk yüklemede doğrula
+      if (input.value) {
+        validateAndUpdate(input, min, max, type);
+      }
     });
+    
+    // İlk yüklemede avatarı güncelle
+    if (element && (sizeFromURL || radiusFromURL || lineFromURL)) {
+      setTimeout(() => {
+        this.updateAvatarFromSettings();
+      }, 100);
+    }
   }
     
   setupEventListeners() {
@@ -859,4 +923,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 

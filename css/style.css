@@ -73,7 +73,7 @@ details.dropdown[open]>ul{opacity:1;transform:translateY(0);pointer-events:auto;
 @keyframes dropdownSlideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes dropdownSlideOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-10px)}}
 details.dropdown[open]>summary::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;z-index:999;cursor:default}
-details.dropdown>ul li{width:100%;margin:0;marker:none}
+details.dropdown>ul li{width:100%;margin:0;list-style-type: none;}
 details.dropdown>ul li button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 16px;border:none;background:0 0;color:var(--primary-clr);font-size:14px;font-family:inherit;cursor:pointer;text-align:left;transition:background-color var(--transition-speed)}
 details.dropdown>ul li button:hover{background-color:var(--bg-hover)}
 details.dropdown>ul li button i{width:16px;height:16px;color:var(--secondary-clr)}

@@ -38,7 +38,6 @@ class ProfilAppExtended {
 
   setupManualCodeInput() {
     const codeDisplay = document.getElementById('code-display');
-
     if (codeDisplay) {
       codeDisplay.addEventListener('input', (e) => {
         const code = e.target.value;
@@ -84,11 +83,9 @@ class ProfilAppExtended {
     const radius = avatarElement.getAttribute('radius') || '25';
     const line = avatarElement.getAttribute('line') || '10';
     const apiUrl = `https://avatar.ckoglu.workers.dev/?size=${size}&radius=${radius}&line=${line}&code=${avatarCode}.svg`;
-
     // 1. API URL input'unu güncelle
     const apiUrlInput = document.getElementById('apiUrlInput');
     if (apiUrlInput) {apiUrlInput.value = apiUrl;}
-    
     const cssCodeElement = document.getElementById('apiCssCode');
     if (cssCodeElement) {
       const cssCode = `.avatar {\n  width: ${size}px;\n  height: ${size}px;\n  background-image: url('${apiUrl}');\n  background-size: contain;\n  border-radius: ${radius}px;\n}`;
@@ -135,9 +132,9 @@ class ProfilAppExtended {
       const element = document.querySelector('[avatar]');
       if (element) {
         element.setAttribute('avatar', codeFromURL);
-        this.updateAvatar(); // <-- Bunu ekle
+        this.updateAvatar(); 
         this.updateAllButtonPreviews();
-        this.updateURL(); // zaten var ama sıralama önemli
+        this.updateURL(); 
       }
     } else {
       const dataElement = document.querySelector('[avatar]');
@@ -154,7 +151,6 @@ class ProfilAppExtended {
     const randomCode = this.secenekler.map(secenekler => secenekler[Math.floor(Math.random() * secenekler.length)]).join('');
     this.kaydetKod = randomCode;
     const element = document.querySelector('[avatar]');
-    
     if (element) {
       element.setAttribute('avatar', randomCode);
       this.updateAvatar();
@@ -237,20 +233,13 @@ class ProfilAppExtended {
     } else {
       let svgContent = '';
       switch(pathType) {
-        case 'goz': svgContent = `<svg viewBox="0 0 120 120"><g transform="translate(-120, -70)">${path}</g></svg>`; 
-          break;
-        case 'agiz': svgContent = `<svg viewBox="0 0 50 50"><g fill="none" transform="translate(-155, -155)">${path}</g></svg>`; 
-          break;
-        case 'aks': svgContent = `<svg viewBox="0 0 300 300"><g transform="translate(0, 0)">${path}</g></svg>`; 
-          break;
-        case 'sakal': svgContent = `<svg viewBox="0 0 150 150"><g transform="translate(-90, -90)">${path}</g></svg>`; 
-          break;
-        case 'sac': svgContent = `<svg viewBox="0 0 300 300"><g stroke="${this.BLACK}">${path}</g></svg>`; 
-          break;
-        case 'yuz': svgContent = `<svg viewBox="0 0 300 300"><g fill="${this.WHITE}" stroke-width="1" transform="translate(0, 0)" stroke="${this.BLACK}">${path}</g></svg>`; 
-          break;
-        case 'govde': svgContent = `<svg viewBox="0 0 300 300"><g fill="${this.WHITE}" transform="translate(5, -30)">${path}</g></svg>`; 
-          break;
+        case 'goz': svgContent = `<svg viewBox="0 0 120 120"><g transform="translate(-120, -70)">${path}</g></svg>`; break;
+        case 'agiz': svgContent = `<svg viewBox="0 0 50 50"><g fill="none" transform="translate(-155, -155)">${path}</g></svg>`; break;
+        case 'aks': svgContent = `<svg viewBox="0 0 300 300"><g transform="translate(0, 0)">${path}</g></svg>`;break;
+        case 'sakal': svgContent = `<svg viewBox="0 0 150 150"><g transform="translate(-90, -90)">${path}</g></svg>`; break;
+        case 'sac': svgContent = `<svg viewBox="0 0 300 300"><g stroke="${this.BLACK}">${path}</g></svg>`; break;
+        case 'yuz': svgContent = `<svg viewBox="0 0 300 300"><g fill="${this.WHITE}" stroke-width="1" transform="translate(0, 0)" stroke="${this.BLACK}">${path}</g></svg>`; break;
+        case 'govde': svgContent = `<svg viewBox="0 0 300 300"><g fill="${this.WHITE}" transform="translate(5, -30)">${path}</g></svg>`; break;
         default: svgContent = `<svg viewBox="0 0 300 300"><g stroke="${this.BLACK}">${path}</g></svg>`;
       }
       inner = `<div class="preview-svg">${svgContent}</div>`;
@@ -300,20 +289,14 @@ class ProfilAppExtended {
   togglePopup(index) {
     const button = document.querySelector(`.control-button[data-index="${index}"]`);
     const popup = document.getElementById(`popup-${index}`);
-    
     if (!button || !popup) return;
-    
     document.querySelectorAll('.popup-overlay.active').forEach(p => {
       if (p !== popup) {
         p.classList.remove('active');
         p.style.display = 'none';
       }
     });
-    
-    document.querySelectorAll('.control-button.active').forEach(btn => {
-      if (btn !== button) {btn.classList.remove('active');}
-    });
-    
+    document.querySelectorAll('.control-button.active').forEach(btn => {if (btn !== button) {btn.classList.remove('active');}});
     if (popup.classList.contains('active')) {
       popup.classList.remove('active');
       popup.style.display = 'none';
@@ -326,16 +309,13 @@ class ProfilAppExtended {
     popup.style.display = 'block';
     button.classList.add('active');
     this.currentPopupIndex = index;
-    
     this.positionPopup(popup, button);
-    
     const outsideClick = (e) => {
       if (!button.contains(e.target) && !popup.contains(e.target)) {
         this.closePopup();
         document.removeEventListener('click', outsideClick);
       }
     };
-    
     setTimeout(() => {document.addEventListener('click', outsideClick);}, 0);
   }
 
@@ -351,13 +331,10 @@ class ProfilAppExtended {
     const popupWidth = popupContent.offsetWidth;
     const popupHeight = popupContent.offsetHeight;
     popupContent.style.visibility = '';
-    
     let left = buttonRect.left + (buttonRect.width / 2) - (popupWidth / 2);
     let top = buttonRect.bottom + 4;
-    
     if (left + popupWidth > viewportWidth) {left = viewportWidth - popupWidth - 10;}
     if (left < 10) {left = 10;}
-    
     if (top + popupHeight > viewportHeight) {
       top = buttonRect.top - popupHeight - 4;
       if (top < 10) {
@@ -371,9 +348,8 @@ class ProfilAppExtended {
       popup.style.top = '50%';
       popup.style.left = '50%';
       popup.style.transform = 'translate(-50%, -50%)';
-    } else {
-      popup.style.transform = 'none';
-    }
+    } 
+    else {popup.style.transform = 'none';}
   }
 
   closePopup() {
@@ -421,7 +397,7 @@ class ProfilAppExtended {
     
     [sizeInput, radiusInput, lineInput].forEach((input, index) => {
       if (!input) return;
-      const limits = [{ min: 16, max: 1080 }, { min: 0, max: 500 }, { min: 0, max: 25 }];
+      const limits = [{ min: 16, max: 620 }, { min: 0, max: 500 }, { min: 0, max: 25 }];
       const types = ['size', 'radius', 'line'];
       const { min, max } = limits[index];
       const type = types[index];
@@ -450,11 +426,8 @@ class ProfilAppExtended {
         const pastedText = e.clipboardData.getData('text');
         const numericText = pastedText.replace(/[^\d]/g, '');
         input.value = numericText;
-        
         const display = input.closest('.setting-group').querySelector(`.value-display.${type}`);
-        if (display) {
-          display.textContent = numericText;
-        }
+        if (display) {display.textContent = numericText;}
       });
     });
   }
@@ -542,9 +515,7 @@ class ProfilAppExtended {
     }
   }
 
-  updateAllButtonPreviews() {
-    this.isim.forEach((_, index) => {this.updateButtonPreview(index, this.kaydetKod[index] || '');});
-  }
+  updateAllButtonPreviews() {this.isim.forEach((_, index) => {this.updateButtonPreview(index, this.kaydetKod[index] || '');});}
 
   updateCodeDisplay() {
     const display = document.getElementById('code-display');
@@ -727,4 +698,5 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
 });

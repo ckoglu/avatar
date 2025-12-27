@@ -724,8 +724,22 @@ async function downloadSVG() {
     const code = avatarElement.getAttribute('avatar') || window.app?.kaydetKod || 'avatar';
     const filename = `avatar-${code}.svg`;
     
-    // SVG elementini klonlayalım ve stil ekleyelim
+    // SVG elementini klonlayalım
     const clonedSvg = svgElement.cloneNode(true);
+    
+    // Border'ı düzeltmek için viewBox'ı güncelle
+    const line = parseInt(avatarElement.getAttribute('line')) || 10;
+    const size = parseInt(avatarElement.getAttribute('size')) || 200;
+    
+    // ViewBox'ı border'ı da içerecek şekilde genişlet
+    const viewBoxSize = 300; // Orijinal SVG viewBox boyutu
+    const scale = size / viewBoxSize;
+    const borderInViewBox = line / scale;
+    
+    // SVG'nin viewBox attribute'unu güncelle
+    clonedSvg.setAttribute('viewBox', 
+      `-${borderInViewBox} -${borderInViewBox} ${viewBoxSize + 2*borderInViewBox} ${viewBoxSize + 2*borderInViewBox}`
+    );
     
     // SVG'yi temizleyip optimize edelim
     const serializer = new XMLSerializer();
@@ -777,6 +791,7 @@ async function downloadRasterFormat(format) {
   }
   
   const size = parseInt(avatarElement.getAttribute('size')) || 200;
+  const line = parseInt(avatarElement.getAttribute('line')) || 10;
   const code = avatarElement.getAttribute('avatar') || window.app?.kaydetKod || 'avatar';
   const filename = `avatar-${code}.${format}`;
   
@@ -788,14 +803,16 @@ async function downloadRasterFormat(format) {
   const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
   const url = URL.createObjectURL(svgBlob);
   
-  // Canvas oluştur
+  // Canvas oluştur - border'ı da dahil etmek için daha büyük canvas
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
-  // Canvas boyutunu ayarla (yüksek çözünürlük için scale)
+  // Border'ı da dahil ederek canvas boyutunu ayarla
+  const borderSize = line * 2; // Her iki taraftaki border
+  const totalSize = size + borderSize;
   const scale = 2; // Retina desteği için 2x
-  canvas.width = size * scale;
-  canvas.height = size * scale;
+  canvas.width = totalSize * scale;
+  canvas.height = totalSize * scale;
   
   // SVG'yi yükle
   const img = new Image();
@@ -807,8 +824,13 @@ async function downloadRasterFormat(format) {
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // SVG'yi canvas'a çiz (scale faktörünü uygula)
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        // SVG'yi canvas'a çiz - border boyutunu da hesaba katarak
+        ctx.drawImage(img, 
+          line * scale, // X offset - border kadar içeri
+          line * scale, // Y offset - border kadar içeri
+          size * scale, // Genişlik
+          size * scale  // Yükseklik
+        );
         
         // Canvas'tan blob oluştur
         canvas.toBlob((blob) => {
@@ -831,25 +853,6 @@ async function downloadRasterFormat(format) {
   });
 }
 
-function saveDownloadFile(blob, filename) {
-  const link = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  
-  link.href = url;
-  link.download = filename;
-  link.style.display = 'none';
-  
-  document.body.appendChild(link);
-  link.click();
-  
-  // Temizlik
-  setTimeout(() => {
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }, 100);
-}
-
-
 document.addEventListener('DOMContentLoaded', () => {
   const app = new ProfilAppExtended();
   app.init();
@@ -859,13 +862,9 @@ document.addEventListener('DOMContentLoaded', () => {
   downloadButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const format = btn.dataset.format.toLowerCase();
-      if (format === 'svg') {
-        downloadSVG();
-      } else if (format === 'png') {
-        downloadPNG();
-      } else if (format === 'jpg') {
-        downloadJPG();
-      }
+      if (format === 'svg') {downloadSVG();} 
+      else if (format === 'png') {downloadPNG();} 
+      else if (format === 'jpg') {downloadJPG();}
     });
   });
   
@@ -923,5 +922,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 

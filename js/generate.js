@@ -777,21 +777,22 @@ async function downloadRasterFormat(format) {
   }
   
   const rawSize = parseInt(avatarElement.getAttribute('size')) || 200;
-  const line = parseInt(avatarElement.getAttribute('line')) || 10;
-  const radius = parseInt(avatarElement.getAttribute('radius')) || 25;
+  const line = parseInt(avatarElement.getAttribute('line')); 
+  const radius = 0;  // Sıfır olarak ayarla
 
   // Canvas boyutu: size + 2*line (outline taşmasını kapsayacak şekilde)
-  const canvasSize = rawSize + 2 * line;
-  const scale = 2; // Retina için 2x
+  const canvasSize = rawSize + line;
+  const scale = 2; // Retina desteği için 2x
   const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  
   canvas.width = canvasSize * scale;
   canvas.height = canvasSize * scale;
-  const ctx = canvas.getContext('2d');
-
-  // Beyaz arka plan
+  
+  // Canvas'ı temizle ve beyaz arka plan ekle
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+        
   // Radius için rounded rect clip (eğer radius > 0 ise)
   if (radius > 0) {
     const clipRadius = radius * scale;
@@ -809,6 +810,49 @@ async function downloadRasterFormat(format) {
     ctx.clip();
   }
 
+  // SVG'yi yükle
+  const serializer = new XMLSerializer();
+  let svgString = serializer.serializeToString(svgElement);
+  const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
+  
+  // SVG'yi yükle
+  const img = new Image();
+  
+  return new Promise((resolve, reject) => {
+    img.onload = () => {
+      try {
+        // SVG'yi line kadar içe offset'leyerek çiz (outline taşmasını merkezde tutmak için)
+        ctx.drawImage(
+          img,
+          line * scale,              // x offset
+          line * scale,              // y offset
+          rawSize * scale,           // width (orijinal size)
+          rawSize * scale            // height
+        );
+        
+        // Canvas'tan blob oluştur
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const code = avatarElement.getAttribute('avatar') || window.app?.kaydetKod || 'avatar';
+            const filename = `avatar-${code}.${format}`;
+            saveDownloadFile(blob, filename, format === 'png' ? 'image/png' : 'image/jpeg');
+            URL.revokeObjectURL(url);
+            resolve();
+            AlertBox(`${format.toUpperCase()} formatında indirildi`, 'success');
+          } else {
+            reject(new Error('Blob oluşturulamadı'));
+          }
+        }, format === 'png' ? 'image/png' : 'image/jpeg', 0.95);
+      } catch (error) {
+        reject(error);
+      }
+    };
+    
+    img.onerror = reject;
+    img.src = url;
+  });
+}
   // SVG'yi yükle
   const serializer = new XMLSerializer();
   let svgString = serializer.serializeToString(svgElement);
@@ -946,6 +990,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

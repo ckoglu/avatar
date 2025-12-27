@@ -707,32 +707,6 @@ function copyUrl(element) {
 }
 
 // İndirme fonksiyonları
-function saveDownloadFile(blob, filename, mimeType) {
-  try {
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    
-    link.href = url;
-    link.download = filename;
-    link.style.display = 'none';
-    
-    document.body.appendChild(link);
-    link.click();
-    
-    // Temizlik
-    setTimeout(() => {
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }, 100);
-    
-    return true;
-  } catch (error) {
-    console.error('Dosya kaydetme hatası:', error);
-    AlertBox('Dosya indirilemedi!', 'danger');
-    return false;
-  }
-}
-
 async function downloadSVG() {
   try {
     const avatarElement = document.querySelector('[avatar]');
@@ -750,22 +724,8 @@ async function downloadSVG() {
     const code = avatarElement.getAttribute('avatar') || window.app?.kaydetKod || 'avatar';
     const filename = `avatar-${code}.svg`;
     
-    // SVG elementini klonlayalım
+    // SVG elementini klonlayalım ve stil ekleyelim
     const clonedSvg = svgElement.cloneNode(true);
-    
-    // Border'ı düzeltmek için viewBox'ı güncelle
-    const line = parseInt(avatarElement.getAttribute('line')) || 10;
-    const size = parseInt(avatarElement.getAttribute('size')) || 200;
-    
-    // ViewBox'ı border'ı da içerecek şekilde genişlet
-    const viewBoxSize = 300; // Orijinal SVG viewBox boyutu
-    const scale = size / viewBoxSize;
-    const borderInViewBox = line / scale;
-    
-    // SVG'nin viewBox attribute'unu güncelle
-    clonedSvg.setAttribute('viewBox', 
-      `-${borderInViewBox} -${borderInViewBox} ${viewBoxSize + 2*borderInViewBox} ${viewBoxSize + 2*borderInViewBox}`
-    );
     
     // SVG'yi temizleyip optimize edelim
     const serializer = new XMLSerializer();
@@ -817,7 +777,6 @@ async function downloadRasterFormat(format) {
   }
   
   const size = parseInt(avatarElement.getAttribute('size')) || 200;
-  const line = parseInt(avatarElement.getAttribute('line')) || 10;
   const code = avatarElement.getAttribute('avatar') || window.app?.kaydetKod || 'avatar';
   const filename = `avatar-${code}.${format}`;
   
@@ -829,16 +788,14 @@ async function downloadRasterFormat(format) {
   const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
   const url = URL.createObjectURL(svgBlob);
   
-  // Canvas oluştur - border'ı da dahil etmek için daha büyük canvas
+  // Canvas oluştur
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
-  // Border'ı da dahil ederek canvas boyutunu ayarla
-  const borderSize = line * 2; // Her iki taraftaki border
-  const totalSize = size + borderSize;
+  // Canvas boyutunu ayarla (yüksek çözünürlük için scale)
   const scale = 2; // Retina desteği için 2x
-  canvas.width = totalSize * scale;
-  canvas.height = totalSize * scale;
+  canvas.width = size * scale;
+  canvas.height = size * scale;
   
   // SVG'yi yükle
   const img = new Image();
@@ -850,13 +807,8 @@ async function downloadRasterFormat(format) {
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // SVG'yi canvas'a çiz - border boyutunu da hesaba katarak
-        ctx.drawImage(img, 
-          line * scale, // X offset - border kadar içeri
-          line * scale, // Y offset - border kadar içeri
-          size * scale, // Genişlik
-          size * scale  // Yükseklik
-        );
+        // SVG'yi canvas'a çiz (scale faktörünü uygula)
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         
         // Canvas'tan blob oluştur
         canvas.toBlob((blob) => {
@@ -879,18 +831,44 @@ async function downloadRasterFormat(format) {
   });
 }
 
+function saveDownloadFile(blob, filename) {
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.href = url;
+  link.download = filename;
+  link.style.display = 'none';
+  
+  document.body.appendChild(link);
+  link.click();
+  
+  // Temizlik
+  setTimeout(() => {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, 100);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const app = new ProfilAppExtended();
   app.init();
-
+  
   // İndirme butonları için event listener'lar
   const downloadButtons = document.querySelectorAll('.dropdown-item[data-format]');
   downloadButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const format = btn.dataset.format.toLowerCase();
-      if (format === 'svg') {downloadSVG();} 
-      else if (format === 'png') {downloadPNG();} 
-      else if (format === 'jpg') {downloadJPG();}
+      if (format === 'svg') {
+        downloadSVG();
+      } else if (format === 'png') {
+        downloadPNG();
+      } else if (format === 'jpg') {
+        downloadJPG();
+      }
+      const details = btn.closest('details');
+      if (details) {
+        details.open = false;
+      }
     });
   });
   
@@ -948,6 +926,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

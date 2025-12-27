@@ -707,6 +707,32 @@ function copyUrl(element) {
 }
 
 // İndirme fonksiyonları
+function saveDownloadFile(blob, filename, mimeType) {
+  try {
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.href = url;
+    link.download = filename;
+    link.style.display = 'none';
+    
+    document.body.appendChild(link);
+    link.click();
+    
+    // Temizlik
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 100);
+    
+    return true;
+  } catch (error) {
+    console.error('Dosya kaydetme hatası:', error);
+    AlertBox('Dosya indirilemedi!', 'danger');
+    return false;
+  }
+}
+
 async function downloadSVG() {
   try {
     const avatarElement = document.querySelector('[avatar]');
@@ -922,6 +948,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

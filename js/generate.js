@@ -776,7 +776,7 @@ async function downloadRasterFormat(format) {
     return;
   }
   
-  const size = parseInt(avatarElement.getAttribute('size')) || 200;
+  const size = parseInt(avatarElement.getAttribute('size')) + parseInt(avatarElement.getAttribute('line')) * 2 || 200;
   const code = avatarElement.getAttribute('avatar') || window.app?.kaydetKod || 'avatar';
   const filename = `avatar-${code}.${format}`;
   
@@ -926,6 +926,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

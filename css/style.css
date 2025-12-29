@@ -238,5 +238,6 @@ footer{text-align:center;color:var(--secondary-clr);font-size:13px;padding-botto
     .popup-content{width: 100%;}
     .options-grid {grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));max-height: none;}
     .option-item {width: 65px;height: 65px;}
+    details.dropdown[open]>ul {display: block;position: fixed;top: auto;left: 10px;padding: 10px;box-sizing: border-box;right: 10px;bottom: 10px;}
 }
 .custom-number-input button[data-ust-title],.range-slider[data-ust-title] {position: relative;}

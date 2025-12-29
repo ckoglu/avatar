@@ -87,7 +87,7 @@ class ProfilAppExtended {
     const size = avatarElement.getAttribute('size') || '200';
     const radius = avatarElement.getAttribute('radius') || '25';
     const line = avatarElement.getAttribute('line') || '10';
-    const apiUrl = `https://avatar.ckoglu.workers.dev/?size=${size}&radius=${radius}&line=${line}&code=${avatarCode}.svg`;
+    const apiUrl = `https://avatar.ckoglu.workers.dev/${avatarCode}.svg`;
     // 1. API URL input'unu güncelle
     const apiUrlInput = document.getElementById('apiUrlInput');
     if (apiUrlInput) {apiUrlInput.value = apiUrl;}
@@ -353,7 +353,6 @@ class ProfilAppExtended {
     if (window.innerWidth <= 768) {
       popup.style.top = '50%';
       popup.style.left = '50%';
-      popup.style.transform = 'translate(-50%, -50%)';
     } 
     else {popup.style.transform = 'none';}
   }
@@ -438,20 +437,14 @@ class ProfilAppExtended {
       // Input değeri değiştiğinde display'i güncelle
       input.addEventListener('input', (e) => {
         const display = e.target.closest('.setting-group').querySelector(`.value-display.${type}`);
-        if (display) {
-          display.textContent = e.target.value;
-        }
+        if (display) {display.textContent = e.target.value;}
       });
       
       // Değişiklik olduğunda doğrula ve avatarı güncelle
       const handleUpdate = () => {
         const value = validateAndUpdate(input, min, max, type);
-        
         // Avatar elementinin attribute'ını güncelle
-        if (element) {
-          element.setAttribute(type, value.toString());
-        }
-        
+        if (element) {element.setAttribute(type, value.toString());}
         // Avatarı güncelle
         this.updateAvatarFromSettings();
       };
@@ -461,9 +454,7 @@ class ProfilAppExtended {
       
       // Sadece sayısal karakterlere izin ver
       input.addEventListener('keypress', (e) => {
-        if (!/^\d$/.test(e.key)) {
-          e.preventDefault();
-        }
+        if (!/^\d$/.test(e.key)) {e.preventDefault();}
       });
       
       // Paste işlemi için
@@ -472,27 +463,18 @@ class ProfilAppExtended {
         const pastedText = e.clipboardData.getData('text');
         const numericText = pastedText.replace(/[^\d]/g, '');
         input.value = numericText;
-        
         const display = input.closest('.setting-group').querySelector(`.value-display.${type}`);
-        if (display) {
-          display.textContent = numericText;
-        }
-        
+        if (display) {display.textContent = numericText;}
         // Paste işleminden sonra otomatik güncelle
         setTimeout(() => handleUpdate(), 10);
       });
-      
       // Input'u ilk yüklemede doğrula
-      if (input.value) {
-        validateAndUpdate(input, min, max, type);
-      }
+      if (input.value) {validateAndUpdate(input, min, max, type);}
     });
     
     // İlk yüklemede avatarı güncelle
     if (element && (sizeFromURL || radiusFromURL || lineFromURL)) {
-      setTimeout(() => {
-        this.updateAvatarFromSettings();
-      }, 100);
+      setTimeout(() => {this.updateAvatarFromSettings();}, 100);
     }
   }
     
@@ -531,9 +513,7 @@ class ProfilAppExtended {
       }
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {this.closePopup();}
-    });
+    document.addEventListener('keydown', (e) => {if (e.key === 'Escape') {this.closePopup();}});
 
     window.addEventListener('scroll', () => {
       if (this.currentPopupIndex !== -1) {
@@ -685,7 +665,7 @@ function extBlank() {
       return;
   }
   const avatarCode = avatarElement.getAttribute('avatar') || '';
-  const extUrl = `https://ckoglu.github.io/avatar/avatar/?code=${avatarCode}`;
+  const extUrl = `https://ckoglu.github.io/avatar/avatar/?code=${avatarCode}&size=100%`;
   window.open(extUrl, '_blank', 'noopener,noreferrer');
 }
 
@@ -875,17 +855,11 @@ document.addEventListener('DOMContentLoaded', () => {
   downloadButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const format = btn.dataset.format.toLowerCase();
-      if (format === 'svg') {
-        downloadSVG();
-      } else if (format === 'png') {
-        downloadPNG();
-      } else if (format === 'jpg') {
-        downloadJPG();
-      }
+      if (format === 'svg') {downloadSVG();} 
+      else if (format === 'png') {downloadPNG();} 
+      else if (format === 'jpg') {downloadJPG();}
       const details = btn.closest('details');
-      if (details) {
-        details.open = false;
-      }
+      if (details) {details.open = false;}
     });
   });
   
@@ -913,11 +887,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    const apiBtn = document.getElementById('api-btn');
-    if (apiBtn) {apiBtn.addEventListener('click', function() {apiBlank(this);});}
-
-    const extBtn = document.getElementById('ext-btn');
-    if (extBtn) {extBtn.addEventListener('click', function() {extBlank(this);});}
+    if (document.getElementById('api-btn')) {document.getElementById('api-btn').addEventListener('click', function() {apiBlank(this);});}
+    if (document.getElementById('ext-btn')) {document.getElementById('ext-btn').addEventListener('click', function() {extBlank(this);});}
     
     codeDisplay.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
@@ -928,12 +899,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const element = document.querySelector('[avatar]');
             if (element) {
               element.setAttribute('avatar', code);
-              
               if (window.avatarApp && typeof window.avatarApp.SVG === 'function') {
                 window.avatarApp.SVG(code.split(''), element);
                 element.innerHTML = window.avatarApp.kisi.svg;
               }
-              
               window.app.updateAllButtonPreviews();
               window.app.updateHtmlCode();
               window.app.updateApiCodeSamples();
@@ -946,6 +915,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

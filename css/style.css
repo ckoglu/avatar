@@ -219,7 +219,8 @@ footer{text-align:center;color:var(--secondary-clr);font-size:13px;padding-botto
     .avatar-controls{justify-content: center;}
     .actions-bar{flex-direction:column}
     .settings-bar{justify-content: space-between;flex-direction: column;gap: 0px;}
-    .setting-group{justify-content:space-between}
+    .setting-group{justify-content:space-between;flex-direction: row;}
+    .setting-bottom {flex:1;justify-content: flex-start;}
     .setting-input{width:100%}
     .about-container{padding:0 15px}
     .about-section{padding:20px}

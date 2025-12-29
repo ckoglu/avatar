@@ -23,7 +23,7 @@
 body{font-family:var(--font-family);font-size:var(--font-size);color:var(--primary-clr);background-color:var(--bg-primary);line-height:1.75;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 a {text-decoration: none;color:var(--focus-clr)}
 main{width:100%;padding-top:130px;max-width: var(--maxw);}
-header{display: flex;justify-content: space-between;align-items: center;margin:0 auto;position: fixed;top: 0;z-index: 999;background: transparent;backdrop-filter: blur(7px);width: 100%;max-width: var(--maxw);}
+header{display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid var(--border-clr);margin:0 auto;position: fixed;top: 0;z-index: 999;background: transparent;backdrop-filter: blur(7px);width: 100%;max-width: var(--maxw);}
 .main-title{margin-bottom:20px;padding-bottom:5px;padding-top:20px;}
 .main-title h1{text-align: left;width: fit-content;font-size:24px;font-weight:700;color:var(--primary-clr);line-height: 1.3;}
 .main-title h1:hover {text-decoration: underline;}

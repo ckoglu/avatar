@@ -340,7 +340,7 @@ class ProfilAppExtended {
         left: '0',
         top: 'auto',
         width: '100%',
-        padding: '20px',
+        padding: '10px',
         boxSizing: 'border-box',
         transform: 'none'
       });
@@ -927,6 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

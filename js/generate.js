@@ -87,7 +87,7 @@ class ProfilAppExtended {
     const size = avatarElement.getAttribute('size') || '200';
     const radius = avatarElement.getAttribute('radius') || '25';
     const line = avatarElement.getAttribute('line') || '10';
-    const apiUrl = `https://avatar.ckoglu.workers.dev/${avatarCode}.svg`;
+    const apiUrl = `https://avatar.ckoglu.workers.dev/${radius}.${line}.${avatarCode}.svg`;
     // 1. API URL input'unu güncelle
     const apiUrlInput = document.getElementById('apiUrlInput');
     if (apiUrlInput) {apiUrlInput.value = apiUrl;}
@@ -929,6 +929,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

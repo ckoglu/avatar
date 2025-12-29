@@ -16,28 +16,32 @@
     <link rel="stylesheet" href="./css/highlite.css" />
 </head>
 <body>
-    <div class="container">
-        <!-- Ana Başlık -->
-        <header class="main-title">
+    <header>
+        <div class="main-title">
             <a href="./"><h1>Avatar Generator</h1></a>
             <p>Herkes için kişiselleştirilmiş avatar</p>
-        </header>
-        
+        </div>
+    </header>
+    <main>
         <!-- Avatar Editör -->
         <section class="avatar-editor">
             <!-- Avatar Görüntüleme -->
-            <div class="avatar-display">
-                <div avatar size="200" radius="25" line="10"></div>
-            </div>
-
-            <div class="code-value">
-                <input id="code-display" type="text" class="code-input" value="">
-                <div class="buttons">
+            <div class="avatar-display"><div avatar size="200" radius="25" line="10"></div></div>
+            <div class="main-code-container">
+                <div class="code-value">
+                    <input id="code-display" type="text" class="code-input" value="">
+                    <div class="buttons">
+                        <data id="copy-btn" size="0.9" data-tooltip="Kopyala"><i icon="copy"></i></data>
+                    </div>
+                </div>
+                <div class="main-buttons">
                     <data id="api-btn" size="1" data-tooltip="API URL'sini aç" onclick="apiBlank(this)"><i icon="code"></i></data>
                     <data id="random-btn" size="1" data-tooltip="Rastgele"><i icon="repeat"></i></data>
-                    <data id="copy-btn" size="0.9" data-tooltip="Kopyala"><i icon="copy"></i></data>
+                    <data id="ext-btn" size="1" data-tooltip="Blank"><i icon="external"></i></data>
                     <details class="dropdown">
-                        <summary><data id="down-btn" size="1" data-tooltip="İndir"><i icon="software-download"></i></data></summary>
+                        <summary>
+                            <data id="down-btn" size="1" data-tooltip="İndir"><i icon="software-download"></i></data>
+                        </summary>
                         <ul>
                             <li><button class="dropdown-item" data-format="svg">SVG</button></li>
                             <li><button class="dropdown-item" data-format="png">PNG</button></li>
@@ -46,10 +50,8 @@
                     </details>
                 </div>
             </div>
-            
             <!-- Kontrol Butonları -->
             <div id="controls-container" class="avatar-controls"></div>
-
             <!-- Ayarlar -->
             <div class="settings-bar">
                 <div class="setting-group"><!-- Boyut -->
@@ -73,7 +75,6 @@
             </div>
                 
         </section>
-
         <section class="about-section">
             <h3 class="section-title">🎯 Sistem Nedir?</h3>
             <p>Avatar Generator, <strong>10 karakterlik bir kodla minimal avatar oluşturan</strong> açık kaynaklı bir JavaScript kütüphanesidir. Her karakter avatarın farklı bir özelliğini temsil eder ve bu kodlarla sınırsız avatar kombinasyonu oluşturulabilir.</p>
@@ -92,7 +93,6 @@
                 </div>
             </div>
         </section>
-
         <!-- URL Input -->
         <section class="code-section">
             <div class="url-container">
@@ -144,7 +144,6 @@
                 </pre>
             </div>
         </section>
-
         <!-- Özellikler -->
         <section class="about-section">
             <h3 class="section-title">🚀 Sistem Özellikleri</h3>
@@ -221,7 +220,6 @@
                 </details>
             </div>
         </section>
-
         <!-- Lisans -->
         <section class="about-section">
             <h3 class="section-title">📄 Lisans </h3>
@@ -236,11 +234,9 @@
                 <li><a href="https://avatar.ckoglu.workers.dev/" target="_blank" data-tooltip="API Endpoint">avatar.ckoglu.workers.dev <data size="0.7"><i icon="external"></i></data></a></li>
             </ul>
         </section>
-
         <section class="slogan-section"><h2>✨ "Minimal kod, maksimal avatar"</h3></section> <!-- Slogan -->
-        <footer><p>Avatar Generator © 2025 - GitHub</p></footer> <!-- Footer -->
-    </div>
-   
+    </main>
+    <footer><p>Avatar Generator © 2025 - GitHub</p></footer> <!-- Footer -->
     <script src="avatar.js"></script>
     <script src="./js/generate.js"></script>
     <script src="./js/highlite.js"></script>

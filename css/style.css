@@ -236,5 +236,7 @@ footer{text-align:center;color:var(--secondary-clr);font-size:13px;padding-botto
     .alert-box .alertIcon {width:48px;height:48px;}
     .popup-overlay.floating-popup {animation:none}
     .popup-content{width: 100%;}
+    .options-grid {grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));max-height: none;}
+    .option-item {width: 65px;height: 65px;}
 }
 .custom-number-input button[data-ust-title],.range-slider[data-ust-title] {position: relative;}

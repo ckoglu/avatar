@@ -234,5 +234,6 @@ footer{text-align:center;color:var(--secondary-clr);font-size:13px;padding-botto
     .main-buttons data, .code-value data, .right-icon data, .alert-box .alertIcon data {--scale:1.3!important}
     .right-icon data {top: 28px;}
     .alert-box .alertIcon {width:48px;height:48px;}
+    .popup-overlay.floating-popup {animation:none}
 }
 .custom-number-input button[data-ust-title],.range-slider[data-ust-title] {position: relative;}

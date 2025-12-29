@@ -332,6 +332,22 @@ class ProfilAppExtended {
     if (!popupContent) return;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
+
+    if (viewportWidth <= 768) {
+      Object.assign(popup.style, {
+        position: 'fixed',
+        bottom: '0',
+        left: '0',
+        top: 'auto',
+        width: '100%',
+        padding: '20px',
+        boxSizing: 'border-box',
+        transform: 'none'
+      });
+      return; // desktop hesaplarına girmesin
+    }
+  
+    popup.style.position = 'absolute';
     popupContent.style.visibility = 'hidden';
     popupContent.style.display = 'block';
     const popupWidth = popupContent.offsetWidth;
@@ -341,8 +357,7 @@ class ProfilAppExtended {
     let top = buttonRect.bottom + 4;
     if (left + popupWidth > viewportWidth) {left = viewportWidth - popupWidth - 10;}
     if (left < 10) {left = 10;}
-    if (top + popupHeight > viewportHeight) {
-      top = buttonRect.top - popupHeight - 4;
+    if (top + popupHeight > viewportHeight) {top = buttonRect.top - popupHeight - 4; 
       if (top < 10) {
         top = buttonRect.bottom + 4;
         left = Math.max(10, (viewportWidth - popupWidth) / 2);
@@ -350,12 +365,8 @@ class ProfilAppExtended {
     }
     popup.style.top = `${top}px`;
     popup.style.left = `${left}px`;
-    if (window.innerWidth <= 768) {
-      popup.style.top = '50%';
-      popup.style.left = '50%';
-      popup.style.transform = 'translate(-50%, -50%)';
-    } 
-    else {popup.style.transform = 'none';}
+    popup.style.bottom = 'auto';
+    popup.style.transform = 'none';
   }
 
   closePopup() {
@@ -916,6 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

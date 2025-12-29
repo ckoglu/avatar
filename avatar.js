@@ -34,13 +34,13 @@ class ProfilApp {
     });
   }
 
-  function isValidCode(code) {
+  isValidCode(code) {
     if (typeof code !== 'string' || code.length !== 10) return false;
     for (let i = 0; i < 10; i++) {
-      const key = pathKeys[i];
+      const key = this.pathKeys[i];
       let value = code[i];
       if (value === '-') continue;
-      if (!pathObjects[key] || !pathObjects[key][value]) {
+      if (!this.pathObjects[key] || !this.pathObjects[key][value]) {
         return false;
       }
     }

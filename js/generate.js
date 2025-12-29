@@ -664,8 +664,10 @@ function apiBlank() {
       AlertBox(`Avatar elementi bulunamadı`, 'danger');
       return;
   }
+  const radius = avatarElement.getAttribute('radius') || '25';
+  const line = avatarElement.getAttribute('line') || '10';
   const avatarCode = avatarElement.getAttribute('avatar') || '';
-  const apiUrl = `https://avatar.ckoglu.workers.dev/${avatarCode}.svg`;
+  const apiUrl = `https://avatar.ckoglu.workers.dev/${radius}.${line}.${avatarCode}.svg`;
   window.open(apiUrl, '_blank', 'noopener,noreferrer');
 }
 
@@ -927,6 +929,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

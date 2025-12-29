@@ -232,7 +232,7 @@ footer{text-align:center;color:var(--secondary-clr);font-size:13px;padding-botto
     .section-title,.slogan-section h2 {font-size: calc(var(--font-size) + 3px);}
     .main-buttons, .main-code-container {gap: 20px;}
     .main-buttons data, .code-value data, .right-icon data, .alert-box .alertIcon data {--scale:1.3!important}
-    .right-icon data {top: 28px;}
+    .right-icon data {top: 24px;right: 2px;}
     .alert-box .alertIcon {width:48px;height:48px;}
     .popup-overlay.floating-popup {animation:none}
 }

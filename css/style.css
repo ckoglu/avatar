@@ -207,7 +207,13 @@ footer{text-align:center;color:var(--secondary-clr);font-size:13px;padding-botto
 .alert-box.info{background:#d1ecf1;color:#0c5460;border-left:4px solid #17a2b8}
 .alert-box.copy{background:#d1e7dd;color:#0f5132;border-left:4px solid #198754}
 @media (max-width:768px){
-    .container{padding:20px}
+    main{padding: 110px 10px 0px 10px;}
+    .main-title {padding-left: 10px;}
+    .control-button {width: 55px;height: 55px;}
+    .main-code-container {flex-direction: column;}
+    .code-value {width: 100%;}
+    details.dropdown>ul li button {font-size:18px;}
+    .stats-grid {grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));}
     .code-section{padding:20px}
     .avatar-display [avatar] svg {max-width:100%!important}
     .avatar-controls{justify-content: center;}
@@ -218,10 +224,15 @@ footer{text-align:center;color:var(--secondary-clr);font-size:13px;padding-botto
     .about-container{padding:0 15px}
     .about-section{padding:20px}
     .feature-grid{grid-template-columns:1fr}
-    .comparison-table{font-size:14px}
     #alertBox {left: 20px;right: 20px;bottom:20px;top: auto;max-width: none;}
     .alert-box {width: 100%;max-width: 100%;}
-    .slogan-section h2 {font-size:18px}
-    .popup-overlay.floating-popup {animation: none;}
+    body, .code-input, code, .url-input, .feature-card p, .comparison-table td, 
+    .comparison-table th, .code-architecture, .title-about, pre, .about-section p, 
+    .settings-bar span, .value-display, .alert-box .alertMessage{font-size: calc(var(--font-size) + 2px);}
+    .section-title,.slogan-section h2 {font-size: calc(var(--font-size) + 3px);}
+    .main-buttons, .main-code-container {gap: 20px;}
+    .main-buttons data, .code-value data, .right-icon data, .alert-box .alertIcon data {--scale:1.3!important}
+    .right-icon data {top: 28px;}
+    .alert-box .alertIcon {width:48px;height:48px;}
 }
 .custom-number-input button[data-ust-title],.range-slider[data-ust-title] {position: relative;}

@@ -673,11 +673,20 @@ function apiBlank() {
       return;
   }
   const avatarCode = avatarElement.getAttribute('avatar') || '';
-  const size = avatarElement.getAttribute('size') || '200';
-  const radius = avatarElement.getAttribute('radius') || '25';
-  const line = avatarElement.getAttribute('line') || '10';
-  const apiUrl = `https://avatar.ckoglu.workers.dev/?size=${size}&radius=${radius}&line=${line}&code=${avatarCode}.svg`;
+  const apiUrl = `https://avatar.ckoglu.workers.dev/${avatarCode}.svg`;
   window.open(apiUrl, '_blank', 'noopener,noreferrer');
+}
+
+function extBlank() {
+  const avatarElement = document.querySelector('[avatar]');
+  if (!avatarElement) {
+      console.error('Avatar elementi bulunamadı');
+      AlertBox(`Avatar elementi bulunamadı`, 'danger');
+      return;
+  }
+  const avatarCode = avatarElement.getAttribute('avatar') || '';
+  const extUrl = `https://ckoglu.github.io/avatar/avatar/?code=${avatarCode}`;
+  window.open(extUrl, '_blank', 'noopener,noreferrer');
 }
 
 function selectAllCode(element) {
@@ -906,6 +915,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const apiBtn = document.getElementById('api-btn');
     if (apiBtn) {apiBtn.addEventListener('click', function() {apiBlank(this);});}
+
+    const extBtn = document.getElementById('ext-btn');
+    if (extBtn) {extBtn.addEventListener('click', function() {extBlank(this);});}
     
     codeDisplay.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
@@ -934,6 +946,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

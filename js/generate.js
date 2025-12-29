@@ -87,7 +87,7 @@ class ProfilAppExtended {
     const size = avatarElement.getAttribute('size') || '200';
     const radius = avatarElement.getAttribute('radius') || '25';
     const line = avatarElement.getAttribute('line') || '10';
-    const apiUrl = `https://avatar.ckoglu.workers.dev/${radius}.${line}.${avatarCode}.svg`;
+    const apiUrl = `https://avatar.ckoglu.workers.dev/${radius}.${line}.${size}.${avatarCode}.svg`;
     // 1. API URL input'unu güncelle
     const apiUrlInput = document.getElementById('apiUrlInput');
     if (apiUrlInput) {apiUrlInput.value = apiUrl;}
@@ -664,10 +664,11 @@ function apiBlank() {
       AlertBox(`Avatar elementi bulunamadı`, 'danger');
       return;
   }
+  const size = avatarElement.getAttribute('size') || '250';
   const radius = avatarElement.getAttribute('radius') || '25';
   const line = avatarElement.getAttribute('line') || '10';
   const avatarCode = avatarElement.getAttribute('avatar') || '';
-  const apiUrl = `https://avatar.ckoglu.workers.dev/${radius}.${line}.${avatarCode}.svg`;
+  const apiUrl = `https://avatar.ckoglu.workers.dev/${avatarCode}.svg`;
   window.open(apiUrl, '_blank', 'noopener,noreferrer');
 }
 
@@ -929,6 +930,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 

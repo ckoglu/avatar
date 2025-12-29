@@ -145,10 +145,10 @@ i[icon="code"]{transform:scale(var(--scale))}
 i[icon="code"],i[icon="code"]::after,i[icon="code"]::before{box-sizing:border-box;position:relative;display:block;width:8px;height:20px}
 i[icon="code"]::after,i[icon="code"]::before{content:"";position:absolute;height:8px;border-left:2px solid var(--secondary-clr);border-bottom:2px solid var(--secondary-clr);transform:rotate(45deg) scaleY(1);left:-4px;top:6px}
 i[icon="code"]::after{transform:rotate(-45deg) scaleX(-1);left:4px}
-i[icon="external"]{box-sizing:border-box;position:relative;display:block;transform:scale(var(--scale));width:12px;height:12px;box-shadow:-2px 2px 0 var(--secondary-clr),-4px -4px 0 -2px,4px 4px var(--secondary-clr) -2px;margin-left:-2px;margin-top:1px}
+i[icon="external"]{box-sizing:border-box;position:relative;display:block;transform:scale(var(--scale));width:12px;height:12px;box-shadow:-2px 2px 0 0 var(--secondary-clr),-4px -4px 0 -2px var(--secondary-clr),4px 4px 0 -2px var(--secondary-clr);margin-left:-2px;margin-top:1px}
 i[icon="external"]::after,i[icon="external"]::before{content:"";display:block;box-sizing:border-box;position:absolute;right:-4px}
 i[icon="external"]::before{background:var(--secondary-clr);transform:rotate(-45deg);width:12px;height:2px;top:1px}
-i[icon="external"]::after{width:8px;height:8px;border-right:2px solid var(--secondary-clr);border-top:2px solid;top:-4px}
+i[icon="external"]::after{width:8px;height:8px;border-right:2px solid var(--secondary-clr);border-top:2px solid var(--secondary-clr);top:-4px}
 i[icon="warning"]{box-sizing:border-box;position:relative;display:block;transform:scale(var(--scale));width:24px;height:24px}
 i[icon="warning"]::before{content:'';position:absolute;left:50%;bottom:1px;transform:translateX(-50%) rotate(0);width:0;height:0;top:.5px;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:20px solid currentColor;--b:3px;clip-path:polygon(50% 0,100% 100%,0 100%,50% 0,50% var(--b),calc(var(--b)*cos(30deg)) calc(100% - var(--b)/ 2),calc(100% - var(--b)*cos(30deg)) calc(100% - var(--b)/ 2),50% var(--b));background:currentColor;mask-image:none;-webkit-mask-image:none}
 i[icon="warning"]::after{content:'!';position:absolute;top:5px;left:50%;transform:translateX(-50%);font-weight:700;font-size:13px;color:currentColor;font-family:sans-serif;font-style:normal}

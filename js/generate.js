@@ -353,6 +353,7 @@ class ProfilAppExtended {
     if (window.innerWidth <= 768) {
       popup.style.top = '50%';
       popup.style.left = '50%';
+      popup.style.transform = 'translate(-50%, -50%)';
     } 
     else {popup.style.transform = 'none';}
   }
@@ -915,6 +916,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 
